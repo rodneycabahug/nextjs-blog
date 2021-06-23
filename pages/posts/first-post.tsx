@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Layout from '../../components/layout';
 
-export default function FirstPost() {
+function FirstPost() {
     return (
         <Layout>
             <Head>
@@ -11,3 +11,5 @@ export default function FirstPost() {
         </Layout>
     );
 }
+
+export default FirstPost;

@@ -24,43 +24,29 @@ export function getSortedPostsData() {
         // combine the id with the matter data
         return {
             id,
-            ...matterResult.data
+            ...(matterResult.data as { date: string, title: string })
         };
     });
 
-    return allPostsData.sort(({ date: a }, { date: b }) => {
-        if (a < b) return 1;
-        else if (b > a) return -1;
-        else return 0;
+    return allPostsData.sort((a, b) => {
+        if (a.date < b.date) return 1;
+        else return -1;
     });
 }
 
 export function getAllPostIds() {
-    const fileNames = fs.readdirSync(postsDirectory)
+    const fileNames = fs.readdirSync(postsDirectory);
 
-    // Returns an array that looks like this:
-    // [
-    //   {
-    //     params: {
-    //       id: 'ssg-ssr'
-    //     }
-    //   },
-    //   {
-    //     params: {
-    //       id: 'pre-rendering'
-    //     }
-    //   }
-    // ]
     return fileNames.map(fileName => {
         return {
             params: {
                 id: fileName.replace(/\.md$/, '')
             }
-        }
-    })
+        };
+    });
 }
 
-export async function getPostData(id) {
+export async function getPostData(id: string) {
     const fullPath = path.join(postsDirectory, `${id}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
@@ -77,6 +63,6 @@ export async function getPostData(id) {
     return {
         id,
         contentHtml,
-        ...matterResult.data
+        ...(matterResult.data as { date: string, title: string })
     };
 }
